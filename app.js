@@ -17,7 +17,7 @@ var connection = mysql.createConnection({
 
 var indexRouter = require('./routes/index'); //VAR USED WITH APP.USE FOR ROUTING
 var usersRouter = require('./routes/users');
-var addRouter = require('./routes/adduser.js');
+var addRouter = require('./routes/adduser');
 
 var app = express();
 
