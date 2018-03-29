@@ -38,7 +38,7 @@ app.use('/users', usersRouter);
 app.use('/login', loginRouter);
 
 app.post('/users/login', (req, res) => {
-  console.log('Someone logged in');
+  console.log(req.body.username);
 });
 
 // catch 404 and forward to error handler
