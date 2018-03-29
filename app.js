@@ -4,11 +4,10 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const mysql = require('mysql');
-const {body, validationResult} = require('express-validator/check');
-const {sanitizeBody} = require('express-validator/filter');
+const expressValidator = require('express-validator');
 require('dotenv').config();
 
-//Initializes connection to database using environment variables
+// Initializes connection to database using environment variables
 var connection = mysql.createConnection({
   host: process.env.DB_HOST,
   port: process.env.DB_PORT,
@@ -17,11 +16,15 @@ var connection = mysql.createConnection({
   database: process.env.DB_NAME
 });
 
-var indexRouter = require('./routes/index'); //VAR USED WITH APP.USE FOR ROUTING
+// Routes
+var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var loginRouter = require('./routes/login');
 
 var app = express();
+
+// Express middleware
+app.use(expressValidator());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -37,8 +40,10 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/login', loginRouter);
 
+//Gets login from login page
 app.post('/users/login', (req, res) => {
   console.log(req.body.username);
+  console.log(req.body.password);
 });
 
 // catch 404 and forward to error handler
@@ -55,6 +60,11 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
+});
+
+//DELETE THIS WHEN DEPLOYING TO EB
+app.listen(3000, () => {
+  console.log('Server started on localhost:3000');
 });
 
 module.exports = app;
