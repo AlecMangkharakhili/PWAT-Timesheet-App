@@ -4,9 +4,20 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mysql = require('mysql');
+require('dotenv').config();
 
-var indexRouter = require('./routes/index');
+//Initializes connection to database using environment variables
+var connection = mysql.createConnection({
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME
+});
+
+var indexRouter = require('./routes/index'); //VAR USED WITH APP.USE FOR ROUTING
 var usersRouter = require('./routes/users');
+var addRouter = require('./routes/adduser');
 
 var app = express();
 
