@@ -17,7 +17,7 @@ var connection = mysql.createConnection({
 
 var indexRouter = require('./routes/index'); //VAR USED WITH APP.USE FOR ROUTING
 var usersRouter = require('./routes/users');
-var addRouter = require('./routes/adduser');
+var addRouter = require('./routes/adduser.js');
 
 var app = express();
 
@@ -33,6 +33,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/add', addRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

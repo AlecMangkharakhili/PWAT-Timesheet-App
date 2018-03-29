@@ -2,6 +2,8 @@ branch-defaults:
   login-page:
     environment: node-express-env
     group_suffix: null
+  new-user-page:
+    environment: node-express-env
 global:
   application_name: TimesheetApp
   branch: null
