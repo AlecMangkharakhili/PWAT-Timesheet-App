@@ -41,13 +41,12 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', loginRouter);
-app.use('/users', usersRouter);
+app.use('/routetest', usersRouter);
 app.use('/adduser', addUserRouter);
 
 //Gets login from login page
-app.post('/users/login', (req, res) => {
-  console.log(req.body.username);
-  console.log(req.body.password);
+app.get('/', (req, res) => {
+  next(usersRouter);
 });
 
 // catch 404 and forward to error handler
