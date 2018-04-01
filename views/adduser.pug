@@ -3,12 +3,12 @@ html
     head
         h3 This is where you add new users to the database.
     body
-        form(action="/adduser", method="post")
+        form(action="/users/add", method="post")
           input(type='hidden', name="_method", value="PUT")
           p First Name
-            input(type='text', name='first-name')
+            input(type='text', name='firstname')
           p Last name
-            input(type='text', name='last-name')
+            input(type='text', name='lastname')
           p Username
             input(type='text', name='username')
           p Email Address
@@ -19,7 +19,7 @@ html
             input(type='text', name='pwconfirm')
 
           label(for='emp') Employee  
-          input(id='emp', type='radio', name='accessrole', value='Employee', checked)
+          input(id='emp', type='radio', name='accessrole', value=0, checked)
           label(for='man') Manager  
-          input(id='man', type='radio', name='accessrole', value='Manager')  
+          input(id='man', type='radio', name='accessrole', value=1)  
           input(type='submit', value='Add User')

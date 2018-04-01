@@ -8,13 +8,19 @@ const expressValidator = require('express-validator');
 require('dotenv').config();
 
 // Initializes connection to database using environment variables
-var connection = mysql.createPool({
-  connectionLimit: 10,
+var connection = mysql.createConnection({
   host: process.env.DB_HOST,
   port: process.env.DB_PORT,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME
+});
+
+connection.connect((err) => {
+  if(err){
+    throw err;
+  }
+  console.log('Connection successful');
 });
 
 // Routes
@@ -44,9 +50,27 @@ app.use('/', index);
 //app.use('/routetest', users);
 app.use('/adduser', addUser);
 
-//Gets login from login page
-app.post('/login', (req, res) => {
+//Gets login from add users page
+app.post('/users/add', (req, res) => {
+  let post = {
+    first_name: req.body.firstname,
+    last_name: req.body.lastname,
+    username: req.body.username,
+    email: req.body.email,
+    password: req.body.password,
+    salt: '123',
+    accesslevel: req.body.accessrole
+  };
+  console.log(req.body.firstname);
+  console.log(req.body.lastname);
   console.log(req.body.username);
+  console.log(req.body.email);
+  console.log(req.body.password);
+  console.log(req.body.accessrole);
+  let sql = 'INSERT INTO users SET ?';
+  let query = connection.query(sql, post, (err, result) => {
+    console.log(result);
+  });
 });
 
 // catch 404 and forward to error handler
