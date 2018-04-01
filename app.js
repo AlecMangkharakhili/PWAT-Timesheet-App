@@ -31,8 +31,6 @@ var addUser = require('./routes/adduser');
 
 var app = express();
 
-// Middleware functions
-
 // Express middleware
   // Middleware for form validation
 app.use(expressValidator());
@@ -51,7 +49,8 @@ app.use('/', index);
 //app.use('/routetest', users);
 app.use('/adduser', addUser);
 
-//Gets login from add users page
+// Pulls information from create adduser page and inserts it into the DB
+// POSTS user information into the database
 app.post('/users/add', (req, res) => {
   // hash encrypts the password and stores the hash + salt
   var hash = bcrypt.hashSync(req.body.password, 10);
