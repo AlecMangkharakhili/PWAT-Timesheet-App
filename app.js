@@ -18,9 +18,9 @@ var connection = mysql.createPool({
 });
 
 // Routes
-var usersRouter = require('./routes/users');
-var loginRouter = require('./routes/login');
-var addUserRouter = require('./routes/adduser');
+var users = require('./routes/users');
+var index = require('./routes/login');
+var addUser = require('./routes/adduser');
 
 var app = express();
 
@@ -40,13 +40,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', loginRouter);
-app.use('/routetest', usersRouter);
-app.use('/adduser', addUserRouter);
+app.use('/', index);
+//app.use('/routetest', users);
+app.use('/adduser', addUser);
 
 //Gets login from login page
 app.get('/', (req, res) => {
-  next(usersRouter);
+  console.log(req.body.username);
 });
 
 // catch 404 and forward to error handler
