@@ -3,7 +3,7 @@ html
     head
         h3 This is where you add new users to the database.
     body
-        form(action="/", method="post")
+        form(action="/adduser", method="post")
           input(type='hidden', name="_method", value="PUT")
           p First Name
             input(type='text', name='first-name')

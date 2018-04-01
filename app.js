@@ -45,7 +45,7 @@ app.use('/', index);
 app.use('/adduser', addUser);
 
 //Gets login from login page
-app.get('/login', (req, res) => {
+app.post('/login', (req, res) => {
   console.log(req.body.username);
 });
 
