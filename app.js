@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const mysql = require('mysql');
 const expressValidator = require('express-validator');
+const bcrypt = require('bcrypt');
 require('dotenv').config();
 
 // Initializes connection to database using environment variables
@@ -52,21 +53,16 @@ app.use('/adduser', addUser);
 
 //Gets login from add users page
 app.post('/users/add', (req, res) => {
+  // hash encrypts the password and stores the hash + salt
+  var hash = bcrypt.hashSync(req.body.password, 10);
   let post = {
     first_name: req.body.firstname,
     last_name: req.body.lastname,
     username: req.body.username,
     email: req.body.email,
-    password: req.body.password,
-    salt: '123',
+    password: hash,
     accesslevel: req.body.accessrole
   };
-  console.log(req.body.firstname);
-  console.log(req.body.lastname);
-  console.log(req.body.username);
-  console.log(req.body.email);
-  console.log(req.body.password);
-  console.log(req.body.accessrole);
   let sql = 'INSERT INTO users SET ?';
   let query = connection.query(sql, post, (err, result) => {
     console.log(result);
