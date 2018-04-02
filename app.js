@@ -65,7 +65,7 @@ app.post('/users/add', (req, res) => {
   let sql = 'INSERT INTO users SET ?';
   let query = connection.query(sql, post, (err, result) => {
     console.log(result);
-  });
+  }); 
 });
 
 // catch 404 and forward to error handler
