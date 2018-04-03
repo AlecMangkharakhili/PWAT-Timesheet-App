@@ -26,10 +26,16 @@ connection.connect((err) => {
 
 // Routes
 var users = require('./routes/users');
-var index = require('./routes/login');
+var login = require('./routes/login');
 var addUser = require('./routes/adduser');
 
 var app = express();
+
+// Global Vars
+app.use((req, res, next) => {
+  res.locals.errors = null;
+  next();
+});
 
 // Express middleware
   // Middleware for form validation
@@ -45,27 +51,45 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', index);
+app.use('/login', login);
 //app.use('/routetest', users);
 app.use('/adduser', addUser);
 
 // Pulls information from create adduser page and inserts it into the DB
 // POSTS user information into the database
 app.post('/users/add', (req, res) => {
+  
+  // Form validation
+  req.checkBody('firstname', 'First name is required').notEmpty();
+  req.checkBody('lastname', 'Last name is required').notEmpty();
+  req.checkBody('username', 'Username is required').notEmpty();
+  req.checkBody('email', 'Email is required').notEmpty();
+  req.checkBody('password', 'Password is required').notEmpty();
+  req.checkBody('pwconfirm', 'Please confirm password').notEmpty();
+
+  var errors = req.validationErrors();
+  if(errors) {
+    res.render('adduser', {
+      errors: errors
+    });
+  } 
+  
+  else {
   // hash encrypts the password and stores the hash + salt
-  var hash = bcrypt.hashSync(req.body.password, 10);
-  let post = {
-    first_name: req.body.firstname,
-    last_name: req.body.lastname,
-    username: req.body.username,
-    email: req.body.email,
-    password: hash,
-    accesslevel: req.body.accessrole
+    var hash = bcrypt.hashSync(req.body.password, 10);
+    let post = {
+      first_name: req.body.firstname,
+      last_name: req.body.lastname,
+      username: req.body.username,
+      email: req.body.email,
+      password: hash,
+      accesslevel: req.body.accessrole
+    };
+    let sql = 'INSERT INTO users SET ?';
+    let query = connection.query(sql, post, (err, result) => {
+      console.log(result);
+    }); 
   };
-  let sql = 'INSERT INTO users SET ?';
-  let query = connection.query(sql, post, (err, result) => {
-    console.log(result);
-  }); 
 });
 
 // catch 404 and forward to error handler

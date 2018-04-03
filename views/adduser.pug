@@ -1,8 +1,11 @@
 doctype html
 html
     head
-        h3 This is where you add new users to the database.
+        h3 Add New User
     body
+        if errors
+          each val in errors
+            li= val.msg
         form(action="/users/add", method="post")
           input(type='hidden', name="_method", value="PUT")
           p First Name
