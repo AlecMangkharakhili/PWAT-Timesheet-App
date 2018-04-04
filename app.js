@@ -25,6 +25,7 @@ connection.connect((err) => {
 });
 
 // Routes
+var home = require('./routes/home');
 var users = require('./routes/users');
 var login = require('./routes/login');
 var addUser = require('./routes/adduser');
@@ -35,6 +36,11 @@ var app = express();
 app.use((req, res, next) => {
   res.locals.errors = null;
   next();
+});
+
+// Access role for logged in user
+app.use((req, res, next) => {
+  res.locals.access = null;
 });
 
 // Express middleware
@@ -52,8 +58,13 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/login', login);
-//app.use('/routetest', users);
+app.use('/routetest', users);
 app.use('/adduser', addUser);
+app.use('/home', home);
+
+app.post('/login/post', (req, res) => {
+  res.render('/home');
+});
 
 // Pulls information from create adduser page and inserts it into the DB
 // POSTS user information into the database
