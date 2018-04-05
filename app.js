@@ -6,6 +6,7 @@ const logger = require('morgan');
 const mysql = require('mysql');
 const expressValidator = require('express-validator');
 const bcrypt = require('bcrypt');
+const sanitize = require('express-validator/filter');
 require('dotenv').config();
 
 // Initializes connection to database using environment variables
@@ -29,6 +30,7 @@ var home = require('./routes/home');
 var redirectToLogin = require('./routes/redirectToLogin');
 var login = require('./routes/login');
 var addUser = require('./routes/adduser');
+var sanitize = require('./routes/testsanitize');
 
 var app = express();
 
@@ -56,6 +58,7 @@ app.use('/login', login);
 app.use('/', redirectToLogin);
 app.use('/adduser', addUser);
 app.use('/home', home);
+app.use('/sanitize', sanitize);
 
 // Login authentication/render
 app.post('/home', (req, res) => {
