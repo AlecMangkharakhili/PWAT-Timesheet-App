@@ -7,6 +7,7 @@ const mysql = require('mysql');
 const expressValidator = require('express-validator');
 const bcrypt = require('bcrypt');
 const sanitizer = require('express-validator/filter');
+const session = require('client-sessions');
 require('dotenv').config();
 
 // Initializes connection to database using environment variables
@@ -43,6 +44,14 @@ app.use((req, res, next) => {
   // Middleware for form validation
 app.use(expressValidator());
 
+  // Middle ware for sessions and cookies
+app.use(session({
+  cookieName: 'session',
+  secret: 'changethislater',
+  duration: 30 * 60 * 1000,
+  activeDuration: 30 * 60 * 1000
+}));
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -59,7 +68,7 @@ app.use('/adduser', addUser);
 app.use('/home', home);
 
 // Login authentication/render
-app.post('/home', (req, res) => {
+app.post('/login', (req, res) => {
   let checkLogin = {
     username: req.body.username,
     password: req.body.password
@@ -69,11 +78,17 @@ app.post('/home', (req, res) => {
       console.log(err);
     }
     else{
-      if(bcrypt.compareSync(req.body.password, results[0].password)){
-        res.render('home');
+      // Checks if the user is in the database
+      if(results != ''){
+        if(bcrypt.compareSync(req.body.password, results[0].password)){
+          res.redirect('/home');
+        }
+        else{
+          res.render('login', {error: 'Invalid username or password'});
+        }
       }
       else{
-        res.render('login');
+        res.render('login', {error: 'Invalid username or password'});
       }
     }
   });
