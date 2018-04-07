@@ -54,9 +54,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-<<<<<<< HEAD
-app.use('/', indexRouter);
-=======
 app.use('/login', login);
 app.use('/', redirectToLogin);
 app.use('/adduser', addUser);
@@ -82,11 +79,6 @@ app.post('/home', (req, res) => {
       }
     }
   });
-});
-
-app.post('/testsanitize', (req, res) => {
-  console.log(req.body.sanitizetext);
-  console.log(sanitizeBody(req.body.sanitizetext).trim().escape());
 });
 
 // Pulls information from create adduser page and inserts it into the DB
@@ -125,7 +117,6 @@ app.post('/users/add', (req, res) => {
     }); 
   };
 });
->>>>>>> login-page
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
