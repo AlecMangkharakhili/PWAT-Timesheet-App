@@ -1,0 +1,28 @@
+doctype html
+html
+    head
+        h3 Add New User
+    body
+        if errors
+          each val in errors
+            li= val.msg
+        form(action="/users/add", method="post")
+          input(type='hidden', name="_method", value="PUT")
+          p First Name
+            input(type='text', name='firstname')
+          p Last name
+            input(type='text', name='lastname')
+          p Username
+            input(type='text', name='username')
+          p Email Address
+            input(type='text', name='email')
+          p Password
+            input(type='password', name='password')
+          p Confirm Password
+            input(type='password', name='pwconfirm')
+
+          label(for='emp') Employee  
+          input(id='emp', type='radio', name='accessrole', value=0, checked)
+          label(for='man') Manager  
+          input(id='man', type='radio', name='accessrole', value=1)  
+          input(type='submit', value='Add User')

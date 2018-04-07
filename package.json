@@ -6,12 +6,18 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "bcrypt": "^1.0.3",
+    "client-sessions": "^0.8.0",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
+    "dotenv": "^5.0.1",
     "express": "~4.16.0",
+    "express-validator": "^5.0.3",
     "http-errors": "~1.6.2",
     "jade": "~1.11.0",
     "morgan": "^1.9.0",
-    "mysql": "^2.15.0"
+    "mysql": "^2.15.0",
+    "npm": "^5.8.0",
+    "pug": "^2.0.3"
   }
 }
