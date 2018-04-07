@@ -6,7 +6,7 @@ const logger = require('morgan');
 const mysql = require('mysql');
 const expressValidator = require('express-validator');
 const bcrypt = require('bcrypt');
-const sanitize = require('express-validator/filter');
+const sanitizer = require('express-validator/filter');
 require('dotenv').config();
 
 // Initializes connection to database using environment variables
@@ -62,7 +62,28 @@ app.use('/sanitize', sanitize);
 
 // Login authentication/render
 app.post('/home', (req, res) => {
-  res.render('home');
+  let checkLogin = {
+    username: req.body.username,
+    password: req.body.password
+  };
+  let query = connection.query('SELECT password FROM users WHERE username = ?', [checkLogin.username], (err, results) => {
+    if(err){
+      console.log(err);
+    }
+    else{
+      if(bcrypt.compareSync(req.body.password, results[0].password)){
+        res.render('home');
+      }
+      else{
+        res.render('login');
+      }
+    }
+  });
+});
+
+app.post('/testsanitize', (req, res) => {
+  console.log(req.body.sanitizetext);
+  console.log(sanitizeBody(req.body.sanitizetext).trim().escape());
 });
 
 // Pulls information from create adduser page and inserts it into the DB
@@ -75,7 +96,7 @@ app.post('/users/add', (req, res) => {
   req.checkBody('username', 'Username is required').notEmpty();
   req.checkBody('email', 'Email is required').notEmpty();
   req.checkBody('password', 'Password is required').notEmpty();
-  req.checkBody('pwconfirm', 'Please confirm password').notEmpty();
+  req.checkBody('pwconfirm', 'Please confirm password').notEmpty(); // TODO Validate confirm password = password
 
   var errors = req.validationErrors();
   if(errors) {
