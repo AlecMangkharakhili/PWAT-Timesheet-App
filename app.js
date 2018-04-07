@@ -30,7 +30,6 @@ var home = require('./routes/home');
 var redirectToLogin = require('./routes/redirectToLogin');
 var login = require('./routes/login');
 var addUser = require('./routes/adduser');
-var sanitize = require('./routes/testsanitize');
 
 var app = express();
 
@@ -58,7 +57,6 @@ app.use('/login', login);
 app.use('/', redirectToLogin);
 app.use('/adduser', addUser);
 app.use('/home', home);
-app.use('/sanitize', sanitize);
 
 // Login authentication/render
 app.post('/home', (req, res) => {
