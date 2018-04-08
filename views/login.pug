@@ -3,6 +3,8 @@ html
     head
         h3 This is the login page!
     body
+        if errors
+          p #{errors}
         form(action="/login", method="post")
           input(type='hidden', name="_method", value="PUT")
           p Username
