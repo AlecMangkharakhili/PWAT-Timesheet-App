@@ -3,10 +3,14 @@ html
     head
         h3 This is the login page!
     body
+<<<<<<< HEAD
         form(action="/nextroute/", method="post")
+=======
+        form(action="/home", method="post")
+>>>>>>> 0c710f13e5609336d00c62fbb86c8487bc0afe1e
           input(type='hidden', name="_method", value="PUT")
           p Username
             input(type='text', name='username')
           p Password
-            input(type='text', name='password')
+            input(type='password', name='password')
           input(type='submit', value='Login')
