@@ -7,7 +7,8 @@ const mysql = require('mysql');
 const expressValidator = require('express-validator');
 const bcrypt = require('bcrypt');
 const sanitizer = require('express-validator/filter');
-const session = require('client-sessions');
+const session = require('express-session');
+const passport = require('passport');
 require('dotenv').config();
 
 // Initializes connection to database using environment variables
