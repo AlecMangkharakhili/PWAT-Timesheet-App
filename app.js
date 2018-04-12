@@ -82,13 +82,14 @@ app.post('/login', (req, res) => {
       if(results != ''){
         if(bcrypt.compareSync(req.body.password, results[0].password)){
           res.redirect('/home');
+          req.session.user = req.body.username;
         }
         else{
-          res.render('login', {error: 'Invalid username or password'});
+          res.render('login', {errors: 'Invalid username or password'});
         }
       }
       else{
-        res.render('login', {error: 'Invalid username or password'});
+        res.render('login', {errors: 'Invalid username or password'});
       }
     }
   });
