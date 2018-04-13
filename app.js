@@ -6,7 +6,6 @@ const logger = require('morgan');
 const mysql = require('mysql');
 const expressValidator = require('express-validator');
 const bcrypt = require('bcrypt');
-const sanitizer = require('express-validator/filter');
 require('dotenv').config();
 
 var app = express();
