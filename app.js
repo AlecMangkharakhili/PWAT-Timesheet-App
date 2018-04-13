@@ -6,45 +6,21 @@ const logger = require('morgan');
 const mysql = require('mysql');
 const expressValidator = require('express-validator');
 const bcrypt = require('bcrypt');
+<<<<<<< HEAD
 const sanitizer = require('express-validator/filter');
 const session = require('express-session');
 const passport = require('passport');
+=======
+>>>>>>> refactor
 require('dotenv').config();
 
-// Initializes connection to database using environment variables
-var connection = mysql.createConnection({
-  host: process.env.DB_HOST,
-  port: process.env.DB_PORT,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME
-});
-
-connection.connect((err) => {
-  if(err){
-    throw err;
-  }
-  console.log('Connection successful');
-});
-
-// Routes
-var home = require('./routes/home');
-var redirectToLogin = require('./routes/redirectToLogin');
-var login = require('./routes/login');
-var addUser = require('./routes/adduser');
-
 var app = express();
-
-// Global Vars
-app.use((req, res, next) => {
-  res.locals.errors = null;
-  next();
-});
 
 // Express middleware
   // Middleware for form validation
 app.use(expressValidator());
 
+<<<<<<< HEAD
   // Middle ware for sessions and cookies
 app.use(session({
   secret: 'changethislater',
@@ -52,6 +28,9 @@ app.use(session({
   saveUninitialized: true,
   //cookie: {secure: true}
 }));
+=======
+var index = require('./routes/index');
+>>>>>>> refactor
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -66,6 +45,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+<<<<<<< HEAD
 app.use('/login', login);
 app.use('/', redirectToLogin);
 app.use('/adduser', addUser);
@@ -134,6 +114,9 @@ app.post('/users/add', (req, res) => {
     }); 
   };
 });
+=======
+app.use('/', index);
+>>>>>>> refactor
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -155,5 +138,6 @@ app.use(function(err, req, res, next) {
 app.listen(3000, () => {
   console.log('Server started on localhost:3000');
 });
+//DELETE THIS WHEN DEPLOYING TO EB
 
 module.exports = app;
