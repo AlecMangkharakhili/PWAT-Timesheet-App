@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 var mysql = require('mysql');
 var bcrypt = require('bcrypt');
-var expressValidator = require('express-validator');
 
 // Import database information and connection
 const db = require('../db');
