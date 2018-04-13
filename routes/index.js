@@ -46,4 +46,39 @@ router.get('/home', (req, res, next) => {
   res.render('home');
 });
 
+router.post('/users/add', (req, res) => {
+  
+  // Form validation
+  req.checkBody('firstname', 'First name is required').notEmpty();
+  req.checkBody('lastname', 'Last name is required').notEmpty();
+  req.checkBody('username', 'Username is required').notEmpty();
+  req.checkBody('email', 'Email is required').notEmpty();
+  req.checkBody('password', 'Password is required').notEmpty();
+  req.checkBody('pwconfirm', 'Please confirm password').notEmpty(); // TODO Validate confirm password = password
+
+  var errors = req.validationErrors();
+  if(errors) {
+    res.render('adduser', {
+      errors: errors
+    });
+  } 
+  
+  else {
+  // hash encrypts the password and stores the hash + salt
+    var hash = bcrypt.hashSync(req.body.password, 10);
+    let post = {
+      first_name: req.body.firstname,
+      last_name: req.body.lastname,
+      username: req.body.username,
+      email: req.body.email,
+      password: hash,
+      accesslevel: req.body.accessrole
+    };
+    let sql = 'INSERT INTO users SET ?';
+    let query = db.query(sql, post, (err, result) => {
+      console.log(result);
+    }); 
+  };
+});
+
 module.exports = router;
