@@ -4,6 +4,15 @@ var mysql = require('mysql');
 var bcrypt = require('bcrypt');
 var expressValidator = require('express-validator');
 
+// Import database information and connection
+const db = require('../db');
+
+// Var for errors
+router.use((req, res, next) => {
+  res.locals.errors = null;
+  next();
+});
+
 router.get('/', function(req, res, next) {
   res.redirect('/login');
 });
@@ -14,8 +23,6 @@ router.get('/login', (req, res, next) => {
 
 // Login authentication/render
 router.post('/login', (req, res) => {
-
-  const db = require('../db');
 
   let checkLogin = {
     username: req.body.username,
@@ -46,7 +53,11 @@ router.get('/home', (req, res, next) => {
   res.render('home');
 });
 
-router.post('/users/add', (req, res) => {
+router.get('/adduser', (req, res) => {
+  res.render('adduser');
+});
+
+router.post('/adduser', (req, res) => {
   
   // Form validation
   req.checkBody('firstname', 'First name is required').notEmpty();
@@ -76,7 +87,7 @@ router.post('/users/add', (req, res) => {
     };
     let sql = 'INSERT INTO users SET ?';
     let query = db.query(sql, post, (err, result) => {
-      console.log(result);
+      res.redirect('/home');
     }); 
   };
 });

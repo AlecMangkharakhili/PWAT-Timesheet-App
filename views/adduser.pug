@@ -6,7 +6,7 @@ html
         if errors
           each val in errors
             li= val.msg
-        form(action="/users/add", method="post")
+        form(action="/adduser", method="post")
           input(type='hidden', name="_method", value="PUT")
           p First Name
             input(type='text', name='firstname')
