@@ -44,10 +44,4 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-//DELETE THIS WHEN DEPLOYING TO EB
-app.listen(3000, () => {
-  console.log('Server started on localhost:3000');
-});
-//DELETE THIS WHEN DEPLOYING TO EB
-
 module.exports = app;
