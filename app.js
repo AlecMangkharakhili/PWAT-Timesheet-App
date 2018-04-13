@@ -47,11 +47,14 @@ app.use(expressValidator());
 
   // Middle ware for sessions and cookies
 app.use(session({
-  cookieName: 'session',
   secret: 'changethislater',
-  duration: 30 * 60 * 1000,
-  activeDuration: 30 * 60 * 1000
+  resave: false,
+  saveUninitialized: true,
+  //cookie: {secure: true}
 }));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -83,7 +86,6 @@ app.post('/login', (req, res) => {
       if(results != ''){
         if(bcrypt.compareSync(req.body.password, results[0].password)){
           res.redirect('/home');
-          req.session.user = req.body.username;
         }
         else{
           res.render('login', {errors: 'Invalid username or password'});
@@ -128,7 +130,7 @@ app.post('/users/add', (req, res) => {
     };
     let sql = 'INSERT INTO users SET ?';
     let query = connection.query(sql, post, (err, result) => {
-      console.log(result);
+      res.redirect('/login');
     }); 
   };
 });
