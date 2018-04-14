@@ -30,7 +30,9 @@ var options = {
   port: process.env.DB_PORT,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME
+  database: process.env.DB_NAME,
+  checkExpirationInterval: 3600000, // Check for expired sessions every hour
+  expiration: 3600000 // Expire session cookie in 1 hour
 };
 
 var sessionStore = new MySQLStore(options);
@@ -40,7 +42,10 @@ app.use(session({
   resave: false,
   store: sessionStore,
   saveUninitialized: false,
-  //cookie: { secure: true }
+  cookie: { 
+    secure: false,
+    maxAge: 3600000 // Set max age for cookies to 1 hour
+  }
 }));
 
 app.use(passport.initialize());
