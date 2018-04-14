@@ -10,7 +10,7 @@ require('dotenv').config();
 
 var app = express();
 app.configure(() => {
-  app.set('port', process.env.PORT || 3000);
+  app.set('port', process.env.PORT || 8081);
 });
 
 // Express middleware
