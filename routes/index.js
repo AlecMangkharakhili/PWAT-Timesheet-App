@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var mysql = require('mysql');
 var bcrypt = require('bcrypt');
+var passport = require('passport');
 
 // Import database information and connection
 const db = require('../db');
@@ -35,7 +36,11 @@ router.post('/login', (req, res) => {
       // Checks if the user is in the database
       if(results != ''){
         if(bcrypt.compareSync(req.body.password, results[0].password)){
-          res.redirect('/home');
+          db.query('SELECT employee_id,accesslevel FROM users WHERE username = ?', [checkLogin.username], (err, results) => {
+            req.login(results[0], (err) => {
+              res.redirect('/home');
+            });
+          });
         }
         else{
           res.render('login', {errors: 'Invalid username or password'});
@@ -48,11 +53,13 @@ router.post('/login', (req, res) => {
   });
 });
 
-router.get('/home', (req, res, next) => {
+router.get('/home', checkLoggedIn(), (req, res, next) => {
+  console.log(req.user);
+  console.log(req.isAuthenticated());
   res.render('home');
 });
 
-router.get('/adduser', (req, res) => {
+router.get('/adduser', checkLoggedIn(), (req, res) => {
   res.render('adduser');
 });
 
@@ -90,5 +97,22 @@ router.post('/adduser', (req, res) => {
     }); 
   };
 });
+
+// Passport serialization and deserialization in session
+passport.serializeUser(function(employee_id, done) {
+  done(null, employee_id);
+});
+
+passport.deserializeUser(function(employee_id, done) {
+    done(null, employee_id);
+});
+
+function checkLoggedIn() {
+  return (req, res, next) => {
+    if (req.isAuthenticated()) return next();
+
+    res.redirect('/login');
+  }
+}
 
 module.exports = router;
