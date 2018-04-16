@@ -9,9 +9,6 @@ const bcrypt = require('bcrypt');
 require('dotenv').config();
 
 var app = express();
-app.configure(() => {
-  app.set('port', process.env.PORT || 8081);
-});
 
 // Express middleware
   // Middleware for form validation
