@@ -1,14 +1,16 @@
 doctype html
 html
     head
-        h3 This is the login page!
     body
-        if errors
-          p #{errors}
-        form(action="/login", method="post")
-          input(type='hidden', name="_method", value="PUT")
-          p Username
-            input(type='text', name='username')
-          p Password
-            input(type='password', name='password')
-          input(type='submit', value='Login')
+      div(id="login")
+        div.errors
+          if errors
+           p #{errors}
+        div
+          form(action="/login", method="post")
+            input(type='hidden', name="_method", value="PUT")
+            p Username
+              input(type='text', name='username')
+            p Password
+              input(type='password', name='password')
+            input(type='submit', value='Login')

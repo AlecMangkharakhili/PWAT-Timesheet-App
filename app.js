@@ -31,8 +31,8 @@ var options = {
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  checkExpirationInterval: 3600000, // Check for expired sessions every hour
-  expiration: 3600000 // Expire session cookie in 1 hour
+  checkExpirationInterval: 1000 * 60 * 1, // Check for expired sessions every 1 minutes
+  expiration: 1000 * 60 * 1 // Expire session cookie in 1 minute
 };
 
 var sessionStore = new MySQLStore(options);
@@ -44,7 +44,7 @@ app.use(session({
   saveUninitialized: false,
   cookie: { 
     secure: false,
-    maxAge: 3600000 // Set max age for cookies to 1 hour
+    maxAge: 1000 * 60 * 1 // Set max age for cookies to 1 minute
   }
 }));
 
