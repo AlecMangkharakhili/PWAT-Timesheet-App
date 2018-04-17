@@ -54,80 +54,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-<<<<<<< HEAD
 app.use('/', loginRouter);
 
 //Gets login from login page
 app.get('/', (req, res) => {
-=======
-app.use('/login', login);
-app.use('/', redirectToLogin);
-app.use('/adduser', addUser);
-app.use('/home', home);
-app.use('/sanitize', sanitize);
-
-// Login authentication/render
-app.post('/home', (req, res) => {
-  let checkLogin = {
-    username: req.body.username,
-    password: req.body.password
-  };
-  let query = connection.query('SELECT password FROM users WHERE username = ?', [checkLogin.username], (err, results) => {
-    if(err){
-      console.log(err);
-    }
-    else{
-      if(bcrypt.compareSync(req.body.password, results[0].password)){
-        res.render('home');
-      }
-      else{
-        res.render('login');
-      }
-    }
-  });
-});
-
-app.post('/testsanitize', (req, res) => {
-  console.log(req.body.sanitizetext);
-  console.log(sanitizeBody(req.body.sanitizetext).trim().escape());
-});
-
-// Pulls information from create adduser page and inserts it into the DB
-// POSTS user information into the database
-app.post('/users/add', (req, res) => {
-  
-  // Form validation
-  req.checkBody('firstname', 'First name is required').notEmpty();
-  req.checkBody('lastname', 'Last name is required').notEmpty();
-  req.checkBody('username', 'Username is required').notEmpty();
-  req.checkBody('email', 'Email is required').notEmpty();
-  req.checkBody('password', 'Password is required').notEmpty();
-  req.checkBody('pwconfirm', 'Please confirm password').notEmpty(); // TODO Validate confirm password = password
-
-  var errors = req.validationErrors();
-  if(errors) {
-    res.render('adduser', {
-      errors: errors
-    });
-  } 
-  
-  else {
-  // hash encrypts the password and stores the hash + salt
-    var hash = bcrypt.hashSync(req.body.password, 10);
-    let post = {
-      first_name: req.body.firstname,
-      last_name: req.body.lastname,
-      username: req.body.username,
-      email: req.body.email,
-      password: hash,
-      accesslevel: req.body.accessrole
-    };
-    let sql = 'INSERT INTO users SET ?';
-    let query = connection.query(sql, post, (err, result) => {
-      console.log(result);
-    }); 
-  };
->>>>>>> 0c710f13e5609336d00c62fbb86c8487bc0afe1e
 });
 
 // catch 404 and forward to error handler
