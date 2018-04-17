@@ -9,3 +9,5 @@
 !.elasticbeanstalk/*.global.yml
 
 .env
+
+node_modules/
