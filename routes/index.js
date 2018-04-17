@@ -38,6 +38,7 @@ router.post('/login', (req, res) => {
         if(bcrypt.compareSync(req.body.password, results[0].password)){
           db.query('SELECT employee_id,accesslevel FROM users WHERE username = ?', [checkLogin.username], (err, results) => {
             req.login(results[0], (err) => {
+              access = results[1];
               res.redirect('/home');
             });
           });
@@ -54,12 +55,12 @@ router.post('/login', (req, res) => {
 });
 
 router.get('/home', checkLoggedIn(), (req, res, next) => {
-  console.log(req.user);
+  console.log(req.user.accesslevel);
   console.log(req.isAuthenticated());
   res.render('home');
 });
 
-router.get('/adduser', checkLoggedIn(), (req, res) => {
+router.get('/adduser', checkLoggedIn(), isManager(), (req, res) => {
   res.render('adduser');
 });
 
@@ -107,11 +108,22 @@ passport.deserializeUser(function(employee_id, done) {
     done(null, employee_id);
 });
 
+// Function checks if a user is logged into the system
 function checkLoggedIn() {
   return (req, res, next) => {
     if (req.isAuthenticated()) return next();
 
     res.redirect('/login');
+  }
+}
+
+// Function checks if the user is a manager and permits access to
+// pages that use this function
+function isManager() {
+  return (req, res, next) => {
+    if (req.user.accesslevel) return next();
+
+    res.redirect('/home');
   }
 }
 
