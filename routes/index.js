@@ -38,7 +38,6 @@ router.post('/login', (req, res) => {
         if(bcrypt.compareSync(req.body.password, results[0].password)){
           db.query('SELECT employee_id,accesslevel FROM users WHERE username = ?', [checkLogin.username], (err, results) => {
             req.login(results[0], (err) => {
-              access = results[1];
               res.redirect('/home');
             });
           });
@@ -55,9 +54,9 @@ router.post('/login', (req, res) => {
 });
 
 router.get('/home', checkLoggedIn(), (req, res, next) => {
-  console.log(req.user.accesslevel);
-  console.log(req.isAuthenticated());
-  res.render('home');
+  res.render('home', {
+    isManager: req.user.accesslevel
+  });
 });
 
 router.get('/adduser', checkLoggedIn(), isManager(), (req, res) => {
