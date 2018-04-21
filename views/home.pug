@@ -1,7 +1,15 @@
 doctype html
 html
     head
-        h5 This is the home page, which will show the timesheet
+        link(rel='stylesheet', href='/stylesheets/style.css')
     body
+        div.sidebar
+        div
+            h1.empname Employee Name
+        div
+            h3.sidebar View Timesheet
+            h3.sidebar Add Entry
+            h3.sidebar Logout
         if isManager
-            h1 YOU ARE A MANAGER/ADMIN
+            h3.sidebar Add Employee
+            h3.sidebar Edit Employee Information
