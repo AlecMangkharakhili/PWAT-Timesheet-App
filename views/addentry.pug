@@ -1,0 +1,22 @@
+doctype html
+html
+    head
+      link(rel='stylesheet', href='/stylesheets/sidebar.css')
+      link(rel='stylesheet', href='/stylesheets/addentry.css')
+    body
+      div.sidebar
+        h1 #{sidebarName}
+        h3 <a href='/home'> View Timesheet </a>
+        h3 <u >Add Entry </u>
+        if isManager
+          h3 <a href='/adduser'> Add Employee </a>
+          h3 Edit Employee Information
+        div
+          h3 <a href='/logout'>Logout</a>
+      div.entryadd
+        if isManager
+          form(action='/addentry', method="post")
+            select(name='employeelist')
+              option(value= 'NULL') Select User
+              each user in selectName
+                option(value= user) #{user}

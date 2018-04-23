@@ -54,17 +54,38 @@ router.post('/login', (req, res) => {
   });
 });
 
-router.get('/logout', (req, res) => {
-  req.logout();
-  req.session.destroy();
-  res.redirect('/login');
-});
-
 router.get('/home', checkLoggedIn(), (req, res, next) => {
   res.render('home', {
     isManager: req.user.accesslevel,
     sidebarName: (req.user.first_name + " " + req.user.last_name)
   });
+});
+
+router.get('/addentry', checkLoggedIn(), (req, res, next) => {
+  if (req.user.accesslevel == 1)
+  {
+    db.query('SELECT first_name,last_name FROM users', (err, results) => {
+      var nameArr = [];
+      for (let i = 0; i < results.length; i++)
+      {
+        // Ignores admin account
+        if (results[i].last_name != "Mangkharakhili")
+        {
+          nameArr.push(results[i].first_name + ' ' + results[i].last_name);
+        }
+      }
+      console.log(nameArr);
+      res.render('addentry', {
+        isManager: req.user.accesslevel,
+        sidebarName: (req.user.first_name + " " + req.user.last_name),
+        selectName: nameArr
+      });
+    });
+  }
+});
+
+router.post('/addentry', (req, res) => {
+  console.log(req.body.employeelist);
 });
 
 router.get('/adduser', checkLoggedIn(), isManager(), (req, res) => {
@@ -109,6 +130,12 @@ router.post('/adduser', (req, res) => {
       res.redirect('/home');
     }); 
   };
+});
+
+router.get('/logout', (req, res) => {
+  req.logout();
+  req.session.destroy();
+  res.redirect('/login');
 });
 
 // Passport serialization and deserialization in session
