@@ -1,15 +1,14 @@
 doctype html
 html
     head
-        link(rel='stylesheet', href='/stylesheets/style.css')
+        link(rel='stylesheet', href='/stylesheets/sidebar.css')
     body
         div.sidebar
-        div
-            h1.empname Employee Name
-        div
-            h3.sidebar View Timesheet
-            h3.sidebar Add Entry
-            h3.sidebar Logout
-        if isManager
-            h3.sidebar Add Employee
-            h3.sidebar Edit Employee Information
+            h1 #{sidebarName}
+            h3 <u>View Timesheet</u>
+            h3 Add Entry
+            if isManager
+                h3 <a href='/adduser'> Add Employee </a>
+                h3 Edit Employee Information
+            div
+                h3 <a href='/logout'>Logout</a>

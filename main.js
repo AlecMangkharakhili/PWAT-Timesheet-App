@@ -80,4 +80,8 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+app.listen('3000', (req, res) => {
+  console.log("Connection started on localhost:3000");
+});
+
 module.exports = app;

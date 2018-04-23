@@ -1,28 +1,39 @@
 doctype html
 html
     head
-        h3 Add New User
+        link(rel='stylesheet', href='/stylesheets/sidebar.css')
+        link(rel='stylesheet', href='/stylesheets/addform.css')
     body
-        if errors
-          each val in errors
-            li= val.msg
-        form(action="/adduser", method="post")
-          input(type='hidden', name="_method", value="PUT")
-          p First Name
-            input(type='text', name='firstname')
-          p Last name
-            input(type='text', name='lastname')
-          p Username
-            input(type='text', name='username')
-          p Email Address
-            input(type='text', name='email')
-          p Password
-            input(type='password', name='password')
-          p Confirm Password
-            input(type='password', name='pwconfirm')
+        div.sidebar
+          h1 #{sidebarName}
+          h3 <a href='/home'> View Timesheet </a>
+          h3 Add Entry
+          if isManager
+            h3 <u>Add Employee</u>
+            h3 Edit Employee Information
+          div
+            h3 <a href='/logout'>Logout</a>
+        div.addform
+          if errors
+            each val in errors
+              li= val.msg
+          form(action="/adduser", method="post")
+            input(type='hidden', name="_method", value="PUT")
+            p First Name
+              input(type='text', name='firstname')
+            p Last name
+              input(type='text', name='lastname')
+            p Username
+              input(type='text', name='username')
+            p Email Address
+              input(type='text', name='email')
+            p Password
+              input(type='password', name='password')
+            p Confirm Password
+              input(type='password', name='pwconfirm')
 
-          label(for='emp') Employee  
-          input(id='emp', type='radio', name='accessrole', value=0, checked)
-          label(for='man') Manager  
-          input(id='man', type='radio', name='accessrole', value=1)  
-          input(type='submit', value='Add User')
+            label(for='emp') Employee  
+            input(id='emp', type='radio', name='accessrole', value=0, checked)
+            label(for='man') Manager  
+            input(id='man', type='radio', name='accessrole', value=1)  
+            input(type='submit', value='Add User')

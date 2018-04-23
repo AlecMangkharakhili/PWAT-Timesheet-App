@@ -1,0 +1,41 @@
+/* The sidebar menu */
+.sidebar {
+  height: 100%; /* Full-height: remove this if you want "auto" height */
+  width: 250px; /* Set the width of the sidebar */
+  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+  z-index: 1; /* Stay on top */
+  top: 0; /* Stay at the top */
+  left: 0;
+  background-color: #111; /* Black */
+  overflow-x: hidden; /* Disable horizontal scroll */
+  padding-top: 20px;
+  padding-left: 10px;
+}
+
+.sidebar h1 {
+  font-family: "Arial";
+  text-align: center;
+  display: block;
+  color: white;
+  padding-bottom: 50px;
+}
+
+.sidebar h3 {
+  font-family: "Arial";
+  padding-left: 5px;
+  padding-bottom: 20px;
+  text-align: left;
+  color: white;
+  cursor: default;
+  height: 1%;
+}
+
+.sidebar a {
+  text-decoration: none;
+  color: white;
+  cursor: pointer;
+}
+
+.sidebar a:hover {
+  color: grey;
+}

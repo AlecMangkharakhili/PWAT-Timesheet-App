@@ -36,8 +36,9 @@ router.post('/login', (req, res) => {
       // Checks if the user is in the database
       if(results != ''){
         if(bcrypt.compareSync(req.body.password, results[0].password)){
-          db.query('SELECT employee_id,accesslevel FROM users WHERE username = ?', [checkLogin.username], (err, results) => {
+          db.query('SELECT employee_id,accesslevel,first_name,last_name FROM users WHERE username = ?', [checkLogin.username], (err, results) => {
             req.login(results[0], (err) => {
+              console.log(results[0]);
               res.redirect('/home');
             });
           });
@@ -53,14 +54,24 @@ router.post('/login', (req, res) => {
   });
 });
 
+router.get('/logout', (req, res) => {
+  req.logout();
+  req.session.destroy();
+  res.redirect('/login');
+});
+
 router.get('/home', checkLoggedIn(), (req, res, next) => {
   res.render('home', {
-    isManager: req.user.accesslevel
+    isManager: req.user.accesslevel,
+    sidebarName: (req.user.first_name + " " + req.user.last_name)
   });
 });
 
 router.get('/adduser', checkLoggedIn(), isManager(), (req, res) => {
-  res.render('adduser');
+  res.render('adduser', {
+    isManager: req.user.accesslevel,
+    sidebarName: (req.user.first_name + " " + req.user.last_name)
+  });
 });
 
 router.post('/adduser', (req, res) => {
@@ -76,6 +87,8 @@ router.post('/adduser', (req, res) => {
   var errors = req.validationErrors();
   if(errors) {
     res.render('adduser', {
+      isManager: req.user.accesslevel,
+      sidebarName: (req.user.first_name + " " + req.user.last_name),
       errors: errors
     });
   } 
