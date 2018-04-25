@@ -6,8 +6,8 @@ html
       // Javascript that hides and reveals form input based on selected option
       script.
         function jobSelector() {
-          var optionIndex = document.getElementById("jobSelection").selectedIndex;
-          console.log(document.getElementsByTagName("option")[x].value);
+          var optionIndex = document.getElementById("jobList").selectedIndex;
+          console.log(document.getElementById("jobList").getElementsByTagName("option")[optionIndex].value);
         }
     body
       div.sidebar
@@ -26,7 +26,7 @@ html
               option(value= 'NULL') Select User
               each user in selectName
                 option(value= user) #{user}
-          select(name='joblist', id="jobSelection", onchange='jobSelector()')
+          select(name='jobList', id="jobList", onchange='jobSelector()')
             option(value='NULL') Select Job Type
             option(value='1.5teach') 1.5 Hour Teach
             option(value='1.5assist') 1.5 Hour Assist
