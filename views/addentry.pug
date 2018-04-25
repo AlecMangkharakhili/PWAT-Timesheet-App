@@ -6,9 +6,26 @@ html
       // Javascript that hides and reveals form input based on selected option
       script.
         function jobSelector() {
+          // Update jobs when adding more divs
+          var jobs = ["date", "teach/assist"];
+          // For loop resets the look of the page onchange
+          for (let i = 0; i < jobs.length; i++)
+          {
+            var resetSelected = document.getElementById(jobs[i]);
+            if (resetSelected.style.display === "block")
+            {
+              resetSelected.style.display = "none";
+            }
+          }
           var optionIndex = document.getElementById("jobList").selectedIndex;
           var selectedJob = document.getElementById("jobList").getElementsByTagName("option")[optionIndex].value;
-          console.log("The job you selected is " + selectedJob);
+          if (selectedJob == "1.5teach" || selectedJob == "1.5assist")
+          {
+            var reveal = document.getElementById("date");
+            reveal.style.display = "block";
+            reveal = document.getElementById("teach/assist");
+            reveal.style.display = "block";
+          }
         }
     body
       div.sidebar
@@ -54,3 +71,12 @@ html
             option(value='random_bonus') Random Bonus
             option(value='PTO') PTO
             option(value='holiday') Holiday
+          div(id="date", style="display: none;")
+            input(type="date", name="date")
+          div(id='teach/assist', style="display: none;")
+            input(type="text", name="class_desc")
+            input(type="number", name="tips", step=".01", min="0")
+            input(type="number", name="seats", min="0")
+            input(type="text", name="comments")
+            
+        
