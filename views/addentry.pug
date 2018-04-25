@@ -14,9 +14,36 @@ html
         div
           h3 <a href='/logout'>Logout</a>
       div.entryadd
-        if isManager
-          form(action='/addentry', method="post")
+        form(action='/addentry', method="post")
+          if isManager
             select(name='employeelist')
               option(value= 'NULL') Select User
               each user in selectName
                 option(value= user) #{user}
+          select(name='joblist', onchange='form.submit()')
+            option(value='NULL') Select Job Type
+            option(value='1.5teach') 1.5 Hour Teach
+            option(value='1.5assist') 1.5 Hour Assist
+            option(value='2teach') 2 Hour Teach
+            option(value='2assist') 2 Hour Assist
+            option(value='2.5teach') 2.5 Hour Teach
+            option(value='2.5assist') 2.5 Hour Assist
+            option(value='3teach') 3 Hour Teach
+            option(value='3assist') 3 Hour Assist
+            option(value='hourlyassist') Hourly Assist
+            option(value='prepaint') Prepaint
+            option(value='largecanvasprepaint') Large Canvas Prepaint
+            option(value='sketch') Sketch
+            option(value='pypsketch') PYP Sketch
+            option(value='special_events') Special Events
+            option(value='artwork_submission') Artwork Submission
+            option(value='offsite_travel') Offsite Travel
+            option(value='admin') Admin
+            option(value='admin_assist') Admin Assist
+            option(value='manager') Manager
+            option(value='marketing') Marketing
+            option(value='team_meeting') Team Meeting
+            option(value='training') Training
+            option(value='random_bonus') Random Bonus
+            option(value='PTO') PTO
+            option(value='holiday') Holiday

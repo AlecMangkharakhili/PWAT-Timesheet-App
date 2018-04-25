@@ -82,10 +82,27 @@ router.get('/addentry', checkLoggedIn(), (req, res, next) => {
       });
     });
   }
+
+  if (req.user.accesslevel == 0)
+  {
+    res.render('addentry', {
+      isManager: req.user.accesslevel,
+      sidebarName: (req.user.first_name + " " + req.user.last_name)
+    })
+  }
 });
 
 router.post('/addentry', (req, res) => {
-  console.log(req.body.employeelist);
+  if(req.user.accesslevel == 1)
+  {
+    console.log(req.body.employeelist);
+    console.log(req.body.joblist);
+  }
+  if(req.user.accesslevel == 0)
+  {
+    console.log(req.user.first_name + " " + req.user.last_name);
+    console.log(req.body.joblist);
+  }
 });
 
 router.get('/adduser', checkLoggedIn(), isManager(), (req, res) => {
