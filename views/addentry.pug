@@ -3,6 +3,12 @@ html
     head
       link(rel='stylesheet', href='/stylesheets/sidebar.css')
       link(rel='stylesheet', href='/stylesheets/addentry.css')
+      // Javascript that hides and reveals form input based on selected option
+      script.
+        function jobSelector() {
+          var optionIndex = document.getElementById("jobSelection").selectedIndex;
+          console.log(document.getElementsByTagName("option")[x].value);
+        }
     body
       div.sidebar
         h1 #{sidebarName}
@@ -14,13 +20,13 @@ html
         div
           h3 <a href='/logout'>Logout</a>
       div.entryadd
-        form(action='/addentry', method="post")
+        form(action='/addentry', method="post", id="jobselect")
           if isManager
             select(name='employeelist')
               option(value= 'NULL') Select User
               each user in selectName
                 option(value= user) #{user}
-          select(name='joblist', onchange='form.submit()')
+          select(name='joblist', id="jobSelection", onchange='jobSelector()')
             option(value='NULL') Select Job Type
             option(value='1.5teach') 1.5 Hour Teach
             option(value='1.5assist') 1.5 Hour Assist
