@@ -7,7 +7,8 @@ html
       script.
         function jobSelector() {
           var optionIndex = document.getElementById("jobList").selectedIndex;
-          console.log(document.getElementById("jobList").getElementsByTagName("option")[optionIndex].value);
+          var selectedJob = document.getElementById("jobList").getElementsByTagName("option")[optionIndex].value;
+          console.log("The job you selected is " + selectedJob);
         }
     body
       div.sidebar
