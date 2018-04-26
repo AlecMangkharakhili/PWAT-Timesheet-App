@@ -7,8 +7,9 @@ html
       script.
         function jobSelector() {
           // Update jobs when adding more divs
-          var jobs = ["date", "teach/assist"];
+          var jobs = ["date", "teach/assist", "prepaint"];
           var teachAssistTags = ["1.5teach", "1.5assist", "2teach", "2assist", "2.5teach", "2.5assist", "3teach" ,"3assist", "admin_assist"];
+          var prepaintTags = ["prepaint", "largecanvasprepaint"];
           // For loop resets the look of the page onchange
           for (let i = 0; i < jobs.length; i++)
           {
@@ -25,6 +26,13 @@ html
             var reveal = document.getElementById("date");
             reveal.style.display = "block";
             reveal = document.getElementById("teach/assist");
+            reveal.style.display = "block";
+          }
+          if (selectedJob == prepaintTags[prepaintTags.indexOf(selectedJob)])
+          {
+            var reveal = document.getElementById("date");
+            reveal.style.display = "block";
+            reveal = document.getElementById("prepaint");
             reveal.style.display = "block";
           }
         }
@@ -73,16 +81,22 @@ html
             option(value='PTO') PTO
             option(value='holiday') Holiday
           div(id="date", style="display: none;")
-            p date
+            p Date
             input(type="date", name="date")
           div(id='teach/assist', style="display: none;")
-            p class description
+            p Class Description
             input(type="text", name="class_desc")
-            p tips
+            p Tips
             input(type="number", name="tips", step=".01", min="0")
             p # seats
             input(type="number", name="seats", min="0")
-            p comments
+            p Comments
+            input(type="text", name="comments")
+            input(type="submit", value="Submit")
+          div(id="prepaint", style="display: none;")
+            p Prepaint Name
+            input(type="text", name="class_desc")
+            p Comments
             input(type="text", name="comments")
             input(type="submit", value="Submit")
             

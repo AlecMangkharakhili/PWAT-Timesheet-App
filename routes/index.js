@@ -93,15 +93,29 @@ router.get('/addentry', checkLoggedIn(), (req, res, next) => {
 });
 
 router.post('/addentry', (req, res) => {
+  var classDesc = req.body.class_desc.filter(function(x){
+    return (x !== (undefined || null || ''));
+  });
+  var comments = req.body.comments.filter(function(x){
+    return (x !== (undefined || null || ''));
+  });
   if(req.user.accesslevel == 1)
   {
-    console.log(req.body.employeelist);
-    console.log(req.body.joblist);
+    let formOutput = {
+      employeeName: req.body.employeelist,
+      jobType:  req.body.jobList,
+      formDate: req.body.date,
+      classDesc: classDesc[0],
+      tips: req.body.tips,
+      seats: req.body.sits,
+      comments: comments[0]
+    }
+    console.log(formOutput);
   }
   if(req.user.accesslevel == 0)
   {
     console.log(req.user.first_name + " " + req.user.last_name);
-    console.log(req.body.joblist);
+    console.log(req.body.jobList);
   }
 });
 
