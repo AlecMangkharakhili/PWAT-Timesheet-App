@@ -36,9 +36,8 @@ router.post('/login', (req, res) => {
       // Checks if the user is in the database
       if(results != ''){
         if(bcrypt.compareSync(req.body.password, results[0].password)){
-          db.query('SELECT employee_id,accesslevel,first_name,last_name FROM users WHERE username = ?', [checkLogin.username], (err, results) => {
+          db.query('SELECT employee_id,accesslevel,name FROM users WHERE username = ?', [checkLogin.username], (err, results) => {
             req.login(results[0], (err) => {
-              console.log(results[0]);
               res.redirect('/home');
             });
           });
@@ -57,27 +56,26 @@ router.post('/login', (req, res) => {
 router.get('/home', checkLoggedIn(), (req, res, next) => {
   res.render('home', {
     isManager: req.user.accesslevel,
-    sidebarName: (req.user.first_name + " " + req.user.last_name)
+    sidebarName: (req.user.name)
   });
 });
 
 router.get('/addentry', checkLoggedIn(), (req, res, next) => {
   if (req.user.accesslevel == 1)
   {
-    db.query('SELECT first_name,last_name FROM users', (err, results) => {
+    db.query('SELECT name FROM users', (err, results) => {
       var nameArr = [];
       for (let i = 0; i < results.length; i++)
       {
         // Ignores admin account
-        if (results[i].last_name != "Mangkharakhili")
+        if (results[i].name != "Alec Mangkharakhili")
         {
-          nameArr.push(results[i].first_name + ' ' + results[i].last_name);
+          nameArr.push(results[i].name);
         }
       }
-      console.log(nameArr);
       res.render('addentry', {
         isManager: req.user.accesslevel,
-        sidebarName: (req.user.first_name + " " + req.user.last_name),
+        sidebarName: (req.user.name),
         selectName: nameArr
       });
     });
@@ -87,12 +85,13 @@ router.get('/addentry', checkLoggedIn(), (req, res, next) => {
   {
     res.render('addentry', {
       isManager: req.user.accesslevel,
-      sidebarName: (req.user.first_name + " " + req.user.last_name)
+      sidebarName: (req.user.name)
     })
   }
 });
 
 router.post('/addentry', (req, res) => {
+  // Removes empty elements from class_desc and comment array for query purposes
   var classDesc = req.body.class_desc.filter(function(x){
     return (x !== (undefined || null || ''));
   });
@@ -103,18 +102,21 @@ router.post('/addentry', (req, res) => {
   {
     let formOutput = {
       employeeName: req.body.employeelist,
-      jobType:  req.body.jobList,
-      formDate: req.body.date,
-      classDesc: classDesc[0],
+      jobName:  req.body.jobList,
+      date: req.body.date,
+      class_desc: classDesc[0],
+      bonus: req.body.bonusList,
+      num_seats: req.body.seats,
+      // ADD PYPSKETCHES
+      // ADD TIME WORKED
       tips: req.body.tips,
-      seats: req.body.sits,
       comments: comments[0]
     }
     console.log(formOutput);
   }
   if(req.user.accesslevel == 0)
   {
-    console.log(req.user.first_name + " " + req.user.last_name);
+    console.log(req.user.name);
     console.log(req.body.jobList);
   }
 });
@@ -122,7 +124,7 @@ router.post('/addentry', (req, res) => {
 router.get('/adduser', checkLoggedIn(), isManager(), (req, res) => {
   res.render('adduser', {
     isManager: req.user.accesslevel,
-    sidebarName: (req.user.first_name + " " + req.user.last_name)
+    sidebarName: (req.user.name)
   });
 });
 
@@ -140,7 +142,7 @@ router.post('/adduser', (req, res) => {
   if(errors) {
     res.render('adduser', {
       isManager: req.user.accesslevel,
-      sidebarName: (req.user.first_name + " " + req.user.last_name),
+      sidebarName: (req.user.name),
       errors: errors
     });
   } 
@@ -149,8 +151,7 @@ router.post('/adduser', (req, res) => {
   // hash encrypts the password and stores the hash + salt
     var hash = bcrypt.hashSync(req.body.password, 10);
     let post = {
-      first_name: req.body.firstname,
-      last_name: req.body.lastname,
+      name: req.body.firstname + " " + req.body.lastname,
       username: req.body.username,
       email: req.body.email,
       password: hash,
@@ -179,6 +180,7 @@ passport.deserializeUser(function(employee_id, done) {
 });
 
 // Function checks if a user is logged into the system
+// Must be placed in all routes that are not the login route
 function checkLoggedIn() {
   return (req, res, next) => {
     if (req.isAuthenticated()) return next();

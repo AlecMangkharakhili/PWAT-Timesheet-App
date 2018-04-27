@@ -86,6 +86,14 @@ html
           div(id='teach/assist', style="display: none;")
             p Class Description
             input(type="text", name="class_desc")
+            p Bonus
+            select(name="bonusList", id="bonusList")
+              option(value="NULL") Select Bonus
+              option(value="NULL") None
+              option(value="+20_noassist") 20+ No Assistance
+              option(value="+40_bonus") 40+ Bonus
+              option(value="sold_private_party") Sold Private Party
+              option(value="vip_room_host") VIP Room Host
             p Tips
             input(type="number", name="tips", step=".01", min="0")
             p # seats
