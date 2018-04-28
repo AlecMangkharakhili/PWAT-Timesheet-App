@@ -100,19 +100,26 @@ router.post('/addentry', (req, res) => {
   });
   if(req.user.accesslevel == 1)
   {
-    let formOutput = {
-      employeeName: req.body.employeelist,
-      jobName:  req.body.jobList,
-      date: req.body.date,
-      class_desc: classDesc[0],
-      bonus: req.body.bonusList,
-      num_seats: req.body.seats,
-      // ADD PYPSKETCHES
-      // ADD TIME WORKED
-      tips: req.body.tips,
-      comments: comments[0]
-    }
-    console.log(formOutput);
+    let query = db.query("SELECT employee_id FROM users WHERE name = ?", [req.body.employeelist], (err, results) => {
+      var formOutput = {
+        employee_id: results[0].employee_id,
+        job_id:  req.body.jobList,
+        date: req.body.date,
+        class_desc: classDesc[0],
+        bonus: req.body.bonusList,
+        num_seats: req.body.seats,
+        tip: req.body.tips,
+        pypsketches: 0, // ADD PYP SKETCHES
+        hrs_worked: 0, // ADD WORK HOURS
+        comments: comments[0]
+      }
+      console.log(formOutput);
+      let sql = 'INSERT INTO timesheet SET ?';
+      console.log(sql);
+      let query = db.query(sql, formOutput, (err, result) => {
+        res.redirect('/home');
+      }); 
+    });
   }
   if(req.user.accesslevel == 0)
   {

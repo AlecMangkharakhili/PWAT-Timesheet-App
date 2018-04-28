@@ -8,8 +8,8 @@ html
         function jobSelector() {
           // Update jobs when adding more divs
           var jobs = ["date", "teach/assist", "prepaint"];
-          var teachAssistTags = ["1.5teach", "1.5assist", "2teach", "2assist", "2.5teach", "2.5assist", "3teach" ,"3assist", "admin_assist"];
-          var prepaintTags = ["prepaint", "largecanvasprepaint"];
+          var teachAssistTags = ["1.5 Hour Teach", "1.5 Hour Assist", "2 Hour Teach", "2 Hour Assist", "2.5 Hour Teach", "2.5 Hour Assist", "3teach" ,"3 Hour Assist", "Admin Assist"];
+          var prepaintTags = ["Prepaint", "Large Canvas Prepaint"];
           // For loop resets the look of the page onchange
           for (let i = 0; i < jobs.length; i++)
           {
@@ -55,31 +55,31 @@ html
                 option(value= user) #{user}
           select(name='jobList', id="jobList", onchange='jobSelector()')
             option(value='NULL') Select Job Type
-            option(value='1.5teach') 1.5 Hour Teach
-            option(value='1.5assist') 1.5 Hour Assist
-            option(value='2teach') 2 Hour Teach
-            option(value='2assist') 2 Hour Assist
-            option(value='2.5teach') 2.5 Hour Teach
-            option(value='2.5assist') 2.5 Hour Assist
-            option(value='3teach') 3 Hour Teach
-            option(value='3assist') 3 Hour Assist
-            option(value='hourlyassist') Hourly Assist
-            option(value='prepaint') Prepaint
-            option(value='largecanvasprepaint') Large Canvas Prepaint
-            option(value='sketch') Sketch
-            option(value='pypsketch') PYP Sketch
-            option(value='special_events') Special Events
-            option(value='artwork_submission') Artwork Submission
-            option(value='offsite_travel') Offsite Travel
-            option(value='admin') Admin
-            option(value='admin_assist') Admin Assist
-            option(value='manager') Manager
-            option(value='marketing') Marketing
-            option(value='team_meeting') Team Meeting
-            option(value='training') Training
-            option(value='random_bonus') Random Bonus
+            option(value='1.5 Hour Teach') 1.5 Hour Teach
+            option(value='1.5 Hour Assist') 1.5 Hour Assist
+            option(value='2 Hour Teach') 2 Hour Teach
+            option(value='2 Hour Assist') 2 Hour Assist
+            option(value='2.5 Hour Teach') 2.5 Hour Teach
+            option(value='2.5 Hour Assist') 2.5 Hour Assist
+            option(value='3 Hour Teach') 3 Hour Teach
+            option(value='3 Hour Assist') 3 Hour Assist
+            option(value='Hourly Assist') Hourly Assist
+            option(value='Prepaint') Prepaint
+            option(value='Large Canvas Prepaint') Large Canvas Prepaint
+            option(value='Sketch') Sketch
+            option(value='PYP Sketches') PYP Sketch
+            option(value='Special Events') Special Events
+            option(value='Artwork Submission') Artwork Submission
+            option(value='Offsite Travel') Offsite Travel
+            option(value='Admin') Admin
+            option(value='Admin Assist') Admin Assist
+            option(value='Manager') Manager
+            option(value='Marketing') Marketing
+            option(value='Team Meeting') Team Meeting
+            option(value='Training') Training
+            option(value='Random Bonus') Random Bonus
             option(value='PTO') PTO
-            option(value='holiday') Holiday
+            option(value='Holiday') Holiday
           div(id="date", style="display: none;")
             p Date
             input(type="date", name="date")
@@ -88,12 +88,11 @@ html
             input(type="text", name="class_desc")
             p Bonus
             select(name="bonusList", id="bonusList")
-              option(value="NULL") Select Bonus
               option(value="NULL") None
-              option(value="+20_noassist") 20+ No Assistance
-              option(value="+40_bonus") 40+ Bonus
-              option(value="sold_private_party") Sold Private Party
-              option(value="vip_room_host") VIP Room Host
+              option(value="20+ No Assistance") 20+ No Assistance
+              option(value="40+ Bonus") 40+ Bonus
+              option(value="Sold Private Party") Sold Private Party
+              option(value="VIP Room Host") VIP Room Host
             p Tips
             input(type="number", name="tips", step=".01", min="0")
             p # seats
