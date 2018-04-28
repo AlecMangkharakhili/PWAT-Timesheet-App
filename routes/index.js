@@ -113,9 +113,7 @@ router.post('/addentry', (req, res) => {
         hrs_worked: 0, // ADD WORK HOURS
         comments: comments[0]
       }
-      console.log(formOutput);
       let sql = 'INSERT INTO timesheet SET ?';
-      console.log(sql);
       let query = db.query(sql, formOutput, (err, result) => {
         res.redirect('/home');
       }); 
@@ -123,8 +121,22 @@ router.post('/addentry', (req, res) => {
   }
   if(req.user.accesslevel == 0)
   {
-    console.log(req.user.name);
-    console.log(req.body.jobList);
+    var formOutput = {
+      employee_id: req.user.employee_id,
+      job_id:  req.body.jobList,
+      date: req.body.date,
+      class_desc: classDesc[0],
+      bonus: req.body.bonusList,
+      num_seats: req.body.seats,
+      tip: req.body.tips,
+      pypsketches: 0, // ADD PYP SKETCHES
+      hrs_worked: 0, // ADD WORK HOURS
+      comments: comments[0]
+    }
+    let sql = 'INSERT INTO timesheet SET ?';
+    let query = db.query(sql, formOutput, (err, result) => {
+      res.redirect('/home');
+    }); 
   }
 });
 
