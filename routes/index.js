@@ -98,6 +98,9 @@ router.post('/addentry', (req, res) => {
   var comments = req.body.comments.filter(function(x){
     return (x !== (undefined || null || ''));
   });
+  var sketches = req.body.sketches.filter(function(x){
+    return (x !== (undefined || null || ''));
+  });
   if(req.user.accesslevel == 1)
   {
     let query = db.query("SELECT employee_id FROM users WHERE name = ?", [req.body.employeelist], (err, results) => {
@@ -109,7 +112,7 @@ router.post('/addentry', (req, res) => {
         bonus: req.body.bonusList,
         num_seats: req.body.seats,
         tip: req.body.tips,
-        pypsketches: 0, // ADD PYP SKETCHES
+        sketches: sketches[0],
         hrs_worked: 0, // ADD WORK HOURS
         comments: comments[0]
       }
@@ -129,7 +132,7 @@ router.post('/addentry', (req, res) => {
       bonus: req.body.bonusList,
       num_seats: req.body.seats,
       tip: req.body.tips,
-      pypsketches: 0, // ADD PYP SKETCHES
+      sketches: sketches[0],
       hrs_worked: 0, // ADD WORK HOURS
       comments: comments[0]
     }
