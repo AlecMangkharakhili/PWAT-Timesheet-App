@@ -7,9 +7,10 @@ html
       script.
         function jobSelector() {
           // Update jobs when adding more divs
-          var jobs = ["date", "teach/assist", "prepaint", "sketches", "pypsketches"];
+          var jobs = ["date", "teach/assist", "prepaint", "sketches", "pypsketches", "hourly"];
           var teachAssistTags = ["1.5 Hour Teach", "1.5 Hour Assist", "2 Hour Teach", "2 Hour Assist", "2.5 Hour Teach", "2.5 Hour Assist", "3teach" ,"3 Hour Assist", "Admin Assist"];
           var prepaintTags = ["Prepaint", "Large Canvas Prepaint"];
+          var hourlyTags = ["Manager", "Marketing", "Admin"];
           // For loop resets the look of the page onchange
           for (let i = 0; i < jobs.length; i++)
           {
@@ -33,6 +34,13 @@ html
             var reveal = document.getElementById("date");
             reveal.style.display = "block";
             reveal = document.getElementById("prepaint");
+            reveal.style.display = "block";
+          }
+          if (selectedJob == hourlyTags[hourlyTags.indexOf(selectedJob)])
+          {
+            var reveal = document.getElementById("date");
+            reveal.style.display = "block";
+            reveal = document.getElementById("hourly");
             reveal.style.display = "block";
           }
           if (selectedJob == "Sketch")
@@ -134,7 +142,14 @@ html
             p Comments
             input(type="text", name="comments")
             input(type="submit", value="Submit")
-
+          div(id="hourly", style="display: none;")
+            p Time In
+            input(type="time", name="timein", id="timein", step="900", min="8:00", max="23:59", required)
+            p Time Out
+            input(type="time", name="timeout", id="timeout", step="900", min="8:00", max="23:59", required)
+            p Comments
+            input(type="text", name="comments")
+            input(type="submit", value="Submit")
             
             
         

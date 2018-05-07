@@ -101,6 +101,10 @@ router.post('/addentry', (req, res) => {
   var sketches = req.body.sketches.filter(function(x){
     return (x !== (undefined || null || ''));
   });
+  console.log(typeof req.body.timeout);
+  console.log(req.body.timein);
+  // Convert timeout and timein to integers somehow
+  var timeworked = req.body.timeout - req.body.timein;
   if(req.user.accesslevel == 1)
   {
     let query = db.query("SELECT employee_id FROM users WHERE name = ?", [req.body.employeelist], (err, results) => {
@@ -113,13 +117,16 @@ router.post('/addentry', (req, res) => {
         num_seats: req.body.seats,
         tip: req.body.tips,
         sketches: sketches[0],
-        hrs_worked: 0, // ADD WORK HOURS
+        hrs_worked: timeworked,
         comments: comments[0]
       }
+      console.log(formOutput);
+      /*
       let sql = 'INSERT INTO timesheet SET ?';
       let query = db.query(sql, formOutput, (err, result) => {
         res.redirect('/home');
       }); 
+      */
     });
   }
   if(req.user.accesslevel == 0)
