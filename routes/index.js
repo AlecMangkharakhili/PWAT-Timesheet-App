@@ -101,10 +101,10 @@ router.post('/addentry', (req, res) => {
   var sketches = req.body.sketches.filter(function(x){
     return (x !== (undefined || null || ''));
   });
-  console.log(typeof req.body.timeout);
-  console.log(req.body.timein);
-  // Convert timeout and timein to integers somehow
-  var timeworked = req.body.timeout - req.body.timein;
+
+  // Figure out a way to validate time without required keyword in html
+  var workHrs = timeConversion(req.body.timein, req.body.timeout);
+
   if(req.user.accesslevel == 1)
   {
     let query = db.query("SELECT employee_id FROM users WHERE name = ?", [req.body.employeelist], (err, results) => {
@@ -117,7 +117,7 @@ router.post('/addentry', (req, res) => {
         num_seats: req.body.seats,
         tip: req.body.tips,
         sketches: sketches[0],
-        hrs_worked: timeworked,
+        hrs_worked: workHrs,
         comments: comments[0]
       }
       console.log(formOutput);
@@ -226,6 +226,24 @@ function isManager() {
 
     res.redirect('/home');
   }
+}
+
+// Time conversion function for time worked
+function timeConversion(timeIn, timeOut) {
+  var convTimeIn = timeIn.split(':');
+  var convTimeOut = timeOut.split(':');
+  var inHr = parseInt(convTimeIn[0]);
+  var inMin = parseInt(convTimeIn[1]);
+  var outHr = parseInt(convTimeOut[0]);
+  var outMin = parseInt(convTimeOut[1]);
+  var inTot = (inHr * 60 * 60) + (inMin * 60);
+  var outTot = (outHr * 60 * 60) + (outMin * 60);
+
+  // Timeworked is in seconds
+  var timeWorked = outTot - inTot;
+  var hours = timeWorked / 3600;
+  
+  return hours;
 }
 
 module.exports = router;

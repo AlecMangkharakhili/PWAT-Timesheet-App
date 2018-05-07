@@ -144,19 +144,12 @@ html
             input(type="submit", value="Submit")
           div(id="hourly", style="display: none;")
             p Time In
-<<<<<<< HEAD
-            input(type="time", name="timein")
+            input(type="time", name="timein", id="timein", step="900", min="8:00", max="23:59")
             p Time Out
-            input(type="time", name="timeout")
-
-=======
-            input(type="time", name="timein", id="timein", step="900", min="8:00", max="23:59", required)
-            p Time Out
-            input(type="time", name="timeout", id="timeout", step="900", min="8:00", max="23:59", required)
+            input(type="time", name="timeout", id="timeout", step="900", min="8:00", max="23:59")
             p Comments
             input(type="text", name="comments")
             input(type="submit", value="Submit")
->>>>>>> fb44cdc1d394318fe11bec9174214758715b20e2
             
             
         
