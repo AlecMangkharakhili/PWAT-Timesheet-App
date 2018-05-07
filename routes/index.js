@@ -140,7 +140,7 @@ router.post('/addentry', (req, res) => {
       num_seats: req.body.seats,
       tip: req.body.tips,
       sketches: sketches[0],
-      hrs_worked: 0, // ADD WORK HOURS
+      hrs_worked: workHrs,
       comments: comments[0]
     }
     let sql = 'INSERT INTO timesheet SET ?';
