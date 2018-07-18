@@ -2,6 +2,7 @@ doctype html
 html
     head
       link(rel='stylesheet', href='/stylesheets/sidebar.css')
+      link(rel='stylesheet', href='/stylesheets/home.css')
     body
       div.sidebar
         h1 #{sidebarName}
@@ -12,3 +13,14 @@ html
           h3 Edit Employee Information
         div
           h3 <a href='/logout'>Logout</a>
+      div.tabout
+        table
+          thead
+          tbody
+            tr
+              each obj in timesheetRows
+                th= obj
+            each obj in timesheetData
+              tr
+                each subobj in obj
+                  td= subobj
