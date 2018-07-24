@@ -3,6 +3,22 @@ html
     head
       link(rel='stylesheet', href='/stylesheets/sidebar.css')
       link(rel='stylesheet', href='/stylesheets/home.css')
+      script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js")
+      script.
+        $(document).ready(function()
+        {
+          $(entryDel).click(function(){
+            if ($(this).is(':checked')){
+              $(buttonDel).removeAttr('disabled');
+            }
+            else {
+              $(buttonDel).attr('disabled', true)
+            }
+          });
+          $(buttonDel).click(function(){
+            console.log("form submit");
+          });
+        });
     body
       div.sidebar
         h1 #{sidebarName}
@@ -14,6 +30,7 @@ html
         div
           h3 <a href='/logout'>Logout</a>
       div.tabout
+        input(type='button' value='Delete' name='buttonDel' id='buttonDel' disabled)
         table
           thead
           tbody
@@ -24,3 +41,4 @@ html
               tr
                 each subobj in obj
                   td= subobj
+                td <input type='checkbox' name='entryDel' id='entryDel'>

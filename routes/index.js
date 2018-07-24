@@ -54,15 +54,14 @@ router.post('/login', (req, res) => {
 });
 
 router.get('/home', checkLoggedIn(), (req, res, next) => {
-  var rowName = ['id', 'Name', 'Job', 'Date', 'Class Description', 'Bonus', '# of Seats', 'Tip', 'Hours Worked', 'Comments'];
+  var rowName = ['Name', 'Job', 'Date', 'Class Description', 'Bonus', '# of Seats', 'Tip', 'Hours Worked', 'Comments'];
   if (req.user.accesslevel = 1)
   {
-    db.query('SELECT timesheet.idtimesheet, users.name, timesheet.job_id, timesheet.date, timesheet.class_desc, timesheet.bonus, timesheet.num_seats, timesheet.tip, timesheet.hrs_worked, timesheet.comments FROM timesheet JOIN users ON timesheet.employee_id = users.employee_id ORDER BY date DESC;', (err, results) => {
+    db.query('SELECT users.name, timesheet.job_id, timesheet.date, timesheet.class_desc, timesheet.bonus, timesheet.num_seats, timesheet.tip, timesheet.hrs_worked, timesheet.comments FROM timesheet JOIN users ON timesheet.employee_id = users.employee_id ORDER BY date DESC;', (err, results) => {
       var rowArr = [];
       var timesheetArr = [];
       for (let i = 0; i < results.length; i++)
         {
-          rowArr.push(results[i].idtimesheet);
           let dateFmat = new Date(results[i].date);
           dateFmat = dateFmat.toISOString().substring(0, 10);
           rowArr.push(results[i].name);
