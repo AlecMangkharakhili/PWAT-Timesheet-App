@@ -93,6 +93,10 @@ router.get('/home', checkLoggedIn(), (req, res, next) => {
   }
 });
 
+router.post('/entrydelete', checkLoggedIn(), (req, res, next) => {
+  console.log(req.body['values']);
+});
+
 router.get('/addentry', checkLoggedIn(), (req, res, next) => {
   if (req.user.accesslevel == 1)
   {

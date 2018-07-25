@@ -7,7 +7,7 @@ html
       script.
         $(document).ready(function()
         {
-          $(entryDel).click(function(){
+          $(checkbox).click(function(){
             if ($(this).is(':checked')){
               $(buttonDel).removeAttr('disabled');
             }
@@ -16,7 +16,17 @@ html
             }
           });
           $(buttonDel).click(function(){
-            console.log("form submit");
+            var values = new Array();
+
+            $.each($("input[name='checkbox']:checked").closest("td").siblings("td"), function () {
+              values.push($(this).text());
+            });
+
+            $.post("/entrydelete", {
+              'values': JSON.stringify(values)
+            }, function(results){
+              alert(results);
+            });
           });
         });
     body
@@ -41,4 +51,4 @@ html
               tr
                 each subobj in obj
                   td= subobj
-                td <input type='checkbox' name='entryDel' id='entryDel'>
+                td <input type='checkbox' name='checkbox' id='checkbox'>
