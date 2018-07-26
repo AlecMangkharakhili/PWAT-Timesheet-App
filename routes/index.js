@@ -94,7 +94,7 @@ router.get('/home', checkLoggedIn(), (req, res, next) => {
 });
 
 router.post('/entrydelete', checkLoggedIn(), (req, res, next) => {
-  console.log(req.body['values']);
+  //console.log(entryArrToObjArr(req.body['values']));
 });
 
 router.get('/addentry', checkLoggedIn(), (req, res, next) => {
@@ -268,6 +268,31 @@ function isManager() {
 
     res.redirect('/home');
   }
+}
+
+// Parses the array from timesheet deletion selections and returns an array of objects
+// Objects consist of name, job, date, and description for precise querying
+function entryArrToObjArr(sheetStr) {
+
+  // Removes double quote marks from string for querying purposes and removes bracket from beginning and end of the string
+  var arr = sheetStr.slice(1, -1).replace(/['"]+/g, '').split(",");
+  var outArr = [];
+
+  while(arr.length != 0)
+  {
+    var queryObj = {
+      name: arr.shift(),
+      job: arr.shift(),
+      date: arr.shift(),
+      desc: arr.shift()
+    }
+
+    outArr.push(queryObj);
+
+    arr.splice(0, 5);
+  }
+
+  return outArr;
 }
 
 // Time conversion function for time worked
