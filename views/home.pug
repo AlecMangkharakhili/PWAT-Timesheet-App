@@ -16,17 +16,20 @@ html
             }
           });
           $(buttonDel).click(function(){
-            var values = new Array();
+            if (confirm("Are you sure you want to delete these entries?"))
+            {
+              var values = new Array();
 
-            $.each($("input[name='checkbox']:checked").closest("td").siblings("td"), function () {
-              values.push($(this).text());
-            });
+              $.each($("input[name='checkbox']:checked").closest("td").siblings("td"), function () {
+                values.push($(this).text());
+              });
 
-            $.post("/entrydelete", {
-              'values': JSON.stringify(values)
-            }, function(results){
-              alert(results);
-            });
+              $.post("/entrydelete", {
+                'values': JSON.stringify(values)
+              }, function(results){
+                location.reload();
+              });
+            }
           });
         });
     body

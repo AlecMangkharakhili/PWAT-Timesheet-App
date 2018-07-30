@@ -53,6 +53,10 @@ router.post('/login', (req, res) => {
   });
 });
 
+// TODO
+// ALLOW MANAGERS TO SORT BY USER, ASC/DESC AND DATE
+// CREATE NONMANAGER PAGE
+
 router.get('/home', checkLoggedIn(), (req, res, next) => {
   var rowName = ['Name', 'Job', 'Date', 'Class Description', 'Bonus', '# of Seats', 'Tip', 'Hours Worked', 'Comments'];
   if (req.user.accesslevel = 1)
@@ -94,7 +98,27 @@ router.get('/home', checkLoggedIn(), (req, res, next) => {
 });
 
 router.post('/entrydelete', checkLoggedIn(), (req, res, next) => {
-  //console.log(entryArrToObjArr(req.body['values']));
+  var timesheetObj = entryArrToObjArr(req.body['values']);
+  console.log(timesheetObj);
+  for (let i = 0; i < timesheetObj.length; i++)
+  {
+    db.query('SELECT employee_id FROM users WHERE name = ?', [timesheetObj[i].name], (err, results) => {
+      console.log(err);
+      console.log(results);
+      timesheetObj[i].name = String(results[0].employee_id);
+      var params = [timesheetObj[i].name, timesheetObj[i].job, timesheetObj[i].date, timesheetObj[i].desc, timesheetObj[i].hrs];
+      console.log(params);
+      // TODO
+      // CANNOT DELETE ENTRIES WITH NULL VALUES (I THINK)
+      // '' NOT INTERPRETED AS null
+      // MUST USE IS NULL OR IS NOT NULL
+      db.query('DELETE FROM timesheet WHERE employee_id = ? AND job_id = ? AND date = ? AND class_desc = ? AND hrs_worked = ?', params, (err, res) => {
+        console.log(err);
+        console.log(res);
+      });
+    });
+  }
+  res.redirect('/home');
 });
 
 router.get('/addentry', checkLoggedIn(), (req, res, next) => {
@@ -280,16 +304,26 @@ function entryArrToObjArr(sheetStr) {
 
   while(arr.length != 0)
   {
+    var inName = arr.shift();
+    var inJob = arr.shift();
+    var inDate = arr.shift();
+    var inDesc = arr.shift(); 
+
+    arr.splice(0, 3);
+
+    var inHrs = arr.shift();
+
+    arr.splice(0, 1);
+
     var queryObj = {
-      name: arr.shift(),
-      job: arr.shift(),
-      date: arr.shift(),
-      desc: arr.shift()
+      name: inName,
+      job: inJob,
+      date: inDate,
+      desc: inDesc,
+      hrs: inHrs
     }
 
     outArr.push(queryObj);
-
-    arr.splice(0, 5);
   }
 
   return outArr;
