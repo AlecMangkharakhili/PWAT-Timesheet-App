@@ -103,19 +103,25 @@ router.post('/entrydelete', checkLoggedIn(), (req, res, next) => {
   for (let i = 0; i < timesheetObj.length; i++)
   {
     db.query('SELECT employee_id FROM users WHERE name = ?', [timesheetObj[i].name], (err, results) => {
-      console.log(err);
-      console.log(results);
       timesheetObj[i].name = String(results[0].employee_id);
-      var params = [timesheetObj[i].name, timesheetObj[i].job, timesheetObj[i].date, timesheetObj[i].desc, timesheetObj[i].hrs];
-      console.log(params);
-      // TODO
-      // CANNOT DELETE ENTRIES WITH NULL VALUES (I THINK)
-      // '' NOT INTERPRETED AS null
-      // MUST USE IS NULL OR IS NOT NULL
-      db.query('DELETE FROM timesheet WHERE employee_id = ? AND job_id = ? AND date = ? AND class_desc = ? AND hrs_worked = ?', params, (err, res) => {
-        console.log(err);
-        console.log(res);
-      });
+      if (timesheetObj[i].desc == "")
+      {
+        var params = [timesheetObj[i].name, timesheetObj[i].job, timesheetObj[i].date, timesheetObj[i].hrs];
+        console.log(params);
+        db.query('DELETE FROM timesheet WHERE employee_id = ? AND job_id = ? AND date = ? AND hrs_worked = ? AND class_desc IS NULL', params, (err, res) => {
+          console.log(res);
+          console.log(err);
+        })
+      }
+      if (timesheetObj[i].hrs == "")
+      {
+        var params = [timesheetObj[i].name, timesheetObj[i].job, timesheetObj[i].date, timesheetObj[i].desc];
+        console.log(params);
+        db.query('DELETE FROM timesheet WHERE employee_id = ? AND job_id = ? AND date = ? AND class_desc = ? AND hrs_worked IS NULL', params, (err, res) => {
+          console.log(res);
+          console.log(err);
+        })
+      }
     });
   }
   res.redirect('/home');
