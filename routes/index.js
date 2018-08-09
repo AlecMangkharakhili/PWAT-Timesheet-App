@@ -55,7 +55,6 @@ router.post('/login', (req, res) => {
 
 // TODO
 // ALLOW MANAGERS TO SORT BY USER, ASC/DESC AND DATE
-// CREATE NONMANAGER PAGE
 
 router.get('/home', checkLoggedIn(), (req, res, next) => {
   var rowName = ['Name', 'Job', 'Date', 'Class Description', 'Bonus', '# of Seats', 'Tip', 'Hours Worked', 'Comments'];
@@ -135,27 +134,20 @@ router.get('/home', checkLoggedIn(), (req, res, next) => {
 
 router.post('/entrydelete', checkLoggedIn(), (req, res, next) => {
   var timesheetObj = entryArrToObjArr(req.body['values']);
-  console.log(timesheetObj);
   for (let i = 0; i < timesheetObj.length; i++)
   {
     db.query('SELECT employee_id FROM users WHERE name = ?', [timesheetObj[i].name], (err, results) => {
-      console.log(err);
-      console.log(results);
       timesheetObj[i].name = String(results[0].employee_id);
       if (timesheetObj[i].hrs == '')
       {
         var params = [timesheetObj[i].name, timesheetObj[i].job, timesheetObj[i].date, timesheetObj[i].desc];
         db.query('DELETE FROM timesheet WHERE employee_id = ? AND job_id = ? AND date = ? AND class_desc = ? AND hrs_worked IS NULL', params, (err, res) => {
-          console.log(res);
-          console.log(err);
         });
       }
       if (timesheetObj[i].desc == '')
       {
         var params = [timesheetObj[i].name, timesheetObj[i].job, timesheetObj[i].date, timesheetObj[i].hrs];
         db.query('DELETE FROM timesheet WHERE employee_id = ? AND job_id = ? AND date = ? AND hrs_worked = ? AND class_desc IS NULL', params, (err, res) => {
-          console.log(res);
-          console.log(err);
         });
       }
     });
@@ -299,6 +291,10 @@ router.post('/adduser', (req, res) => {
       res.redirect('/home');
     }); 
   };
+});
+
+router.get('/editinfo', (req, res) => {
+
 });
 
 router.get('/logout', (req, res) => {
