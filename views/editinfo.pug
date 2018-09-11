@@ -1,0 +1,15 @@
+doctype html
+html
+    head
+        link(rel='stylesheet', href='/stylesheets/sidebar.css')
+    body
+        div.sidebar
+          h1 #{sidebarName}
+          h3 <a href='/home'> View Timesheet </a>
+          h3 <a href='/addentry'> Add Entry </a>
+          if isManager
+            h3 <a href='/adduser'> Add Employee </a>
+            h3 <u> Edit Employee Wages </u>
+            h3 Wage Export
+          div
+            h3 <a href='/logout'>Logout</a>

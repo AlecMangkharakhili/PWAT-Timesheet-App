@@ -294,7 +294,22 @@ router.post('/adduser', (req, res) => {
 });
 
 router.get('/editinfo', (req, res) => {
-
+  db.query('SELECT users.name, jobs.* FROM job JOIN users ON jobs.employee_id = users.employee_id', (err, results) => {
+    var nameArr = [];
+    for (let i = 0; i < results.length; i++)
+    {
+      // Ignores admin account
+      if (results[i].name != "Alec Mangkharakhili")
+      {
+        nameArr.push(results[i].name);
+      }
+    }
+    res.render('editinfo', {
+      isManager: req.user.accesslevel,
+      sidebarName: (req.user.name),
+      selectName: nameArr
+    });
+  });  
 });
 
 router.get('/logout', (req, res) => {
