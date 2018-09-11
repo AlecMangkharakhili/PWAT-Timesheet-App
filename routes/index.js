@@ -294,20 +294,22 @@ router.post('/adduser', (req, res) => {
 });
 
 router.get('/editinfo', (req, res) => {
-  db.query('SELECT users.name, jobs.* FROM job JOIN users ON jobs.employee_id = users.employee_id', (err, results) => {
-    var nameArr = [];
-    for (let i = 0; i < results.length; i++)
-    {
-      // Ignores admin account
-      if (results[i].name != "Alec Mangkharakhili")
+  db.query('CREATE TEMPORARY TABLE temp  AS SELECT users.name, jobs.* FROM jobs JOIN users ON jobs.employee_id = users.employee_id;ALTER TABLE temp DROP COLUMN employee_id', (err, results) => {
+    db.query('SELECT * FROM temp', (err, results) => {
+      var wageArr = [];
+      for (let i = 0; i < results.length; i++)
       {
-        nameArr.push(results[i].name);
+        // Ignores admin account
+        if (results[i].name != "Alec Mangkharakhili")
+        {
+          wageArr.push(results[i]);
+        }
       }
-    }
-    res.render('editinfo', {
-      isManager: req.user.accesslevel,
-      sidebarName: (req.user.name),
-      selectName: nameArr
+      res.render('editinfo', {
+        isManager: req.user.accesslevel,
+        sidebarName: (req.user.name), 
+        selectName: wageArr
+      });
     });
   });  
 });
