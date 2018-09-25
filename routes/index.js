@@ -55,13 +55,48 @@ router.post('/login', (req, res) => {
 
 // TODO
 // ALLOW MANAGERS TO SORT BY USER, ASC/DESC AND DATE
-// CREATE NONMANAGER PAGE
 
 router.get('/home', checkLoggedIn(), (req, res, next) => {
   var rowName = ['Name', 'Job', 'Date', 'Class Description', 'Bonus', '# of Seats', 'Tip', 'Hours Worked', 'Comments'];
-  if (req.user.accesslevel = 1)
+  if (req.user.accesslevel == 1)
   {
     db.query('SELECT users.name, timesheet.job_id, timesheet.date, timesheet.class_desc, timesheet.bonus, timesheet.num_seats, timesheet.tip, timesheet.hrs_worked, timesheet.comments FROM timesheet JOIN users ON timesheet.employee_id = users.employee_id ORDER BY date DESC;', (err, results) => {
+      var rowArr = [];
+      var timesheetArr = [];
+      for (let i = 0; i < results.length; i++)
+        {
+          let dateFmat = new Date(results[i].date);
+          dateFmat = dateFmat.toISOString().substring(0, 10);
+          rowArr.push(results[i].name);
+          rowArr.push(results[i].job_id);
+          rowArr.push(dateFmat);
+          rowArr.push(results[i].class_desc);
+          if (results[i].bonus == "NULL")
+          {
+            rowArr.push("None");
+          }
+          else
+          {
+            rowArr.push(results[i].bonus);
+          }
+          rowArr.push(results[i].num_seats);
+          rowArr.push('$' + results[i].tip);
+          rowArr.push(results[i].hrs_worked);
+          rowArr.push(results[i].comments);
+          timesheetArr.push(rowArr);
+          rowArr = [];
+        }
+      res.render('home', {
+        isManager: req.user.accesslevel,
+        sidebarName: (req.user.name),
+        timesheetRows: rowName,
+        timesheetData: timesheetArr
+      });
+    });
+  }
+  if (req.user.accesslevel == 0 )
+  {
+    db.query('SELECT users.name, timesheet.job_id, timesheet.date, timesheet.class_desc, timesheet.bonus, timesheet.num_seats, timesheet.tip, timesheet.hrs_worked, timesheet.comments FROM timesheet JOIN users ON timesheet.employee_id = users.employee_id WHERE users.name = ? ORDER BY date DESC;', req.user.name, (err, results) => {
       var rowArr = [];
       var timesheetArr = [];
       for (let i = 0; i < results.length; i++)
@@ -99,11 +134,11 @@ router.get('/home', checkLoggedIn(), (req, res, next) => {
 
 router.post('/entrydelete', checkLoggedIn(), (req, res, next) => {
   var timesheetObj = entryArrToObjArr(req.body['values']);
-  console.log(timesheetObj);
   for (let i = 0; i < timesheetObj.length; i++)
   {
     db.query('SELECT employee_id FROM users WHERE name = ?', [timesheetObj[i].name], (err, results) => {
       timesheetObj[i].name = String(results[0].employee_id);
+<<<<<<< HEAD
       if (timesheetObj[i].desc == "")
       {
         var params = [timesheetObj[i].name, timesheetObj[i].job, timesheetObj[i].date, timesheetObj[i].hrs];
@@ -121,6 +156,19 @@ router.post('/entrydelete', checkLoggedIn(), (req, res, next) => {
           console.log(res);
           console.log(err);
         })
+=======
+      if (timesheetObj[i].hrs == '')
+      {
+        var params = [timesheetObj[i].name, timesheetObj[i].job, timesheetObj[i].date, timesheetObj[i].desc];
+        db.query('DELETE FROM timesheet WHERE employee_id = ? AND job_id = ? AND date = ? AND class_desc = ? AND hrs_worked IS NULL', params, (err, res) => {
+        });
+      }
+      if (timesheetObj[i].desc == '')
+      {
+        var params = [timesheetObj[i].name, timesheetObj[i].job, timesheetObj[i].date, timesheetObj[i].hrs];
+        db.query('DELETE FROM timesheet WHERE employee_id = ? AND job_id = ? AND date = ? AND hrs_worked = ? AND class_desc IS NULL', params, (err, res) => {
+        });
+>>>>>>> 9335d33505bcc488b789d8bd9cca7cb866f5da37
       }
     });
   }
@@ -263,6 +311,10 @@ router.post('/adduser', (req, res) => {
       res.redirect('/home');
     }); 
   };
+});
+
+router.get('/editinfo', (req, res) => {
+
 });
 
 router.get('/logout', (req, res) => {
